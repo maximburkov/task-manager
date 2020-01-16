@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using TaskManager.Models;
+using TaskManager.Services;
 
 namespace TaskManager
 {
@@ -27,6 +29,11 @@ namespace TaskManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var conString = Configuration.GetValue<string>("StorageConnectionString");
+
+            services.AddSingleton<IDbContext>(new CosmosDBContext(conString));
+            services.AddScoped<IRepository<TaskEntity>, TaskRepository>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(options =>
@@ -38,6 +45,8 @@ namespace TaskManager
                     Description = "Description"
                 });
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
