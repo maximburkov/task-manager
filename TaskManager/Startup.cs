@@ -31,8 +31,8 @@ namespace TaskManager
         {
             var conString = Configuration.GetValue<string>("StorageConnectionString");
 
-            services.AddSingleton<IDbContext>(new CosmosDBContext(conString));
-            services.AddScoped<IRepository<TaskEntity>, TaskRepository>();
+            //services.AddSingleton<IDbContext>(new CosmosDBContext(conString));
+            //services.AddScoped<ITableStorageRepository<TaskEntity>, TaskRepository>();
 
             services.AddControllers();
 

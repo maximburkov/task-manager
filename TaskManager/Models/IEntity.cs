@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TaskManager.Services
+namespace TaskManager.Models
 {
-    public class StorageService
-    {
+    public interface IEntity
+    { 
+        public string Id { get; set; }
     }
 }

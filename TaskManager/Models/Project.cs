@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace TaskManager.Models
 {
-    public class TaskEntity : TableEntity, IEntity
+    public class Project : TableEntity, IEntity
     {
         public string Id
         {
@@ -14,11 +14,9 @@ namespace TaskManager.Models
             set => RowKey = value;
         }
 
-        public string Subject { get; set; }
+        public string Code { get; set; }
 
-        public string Description { get; set; }
-
-        public string ProjectId
+        public string Name
         {
             get => PartitionKey;
             set => PartitionKey = value;
