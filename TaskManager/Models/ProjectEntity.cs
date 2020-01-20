@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Models
 {
-    public interface IEntity
-    { 
+    public class ProjectEntity
+    {
         public string Id { get; set; }
+
+        public string Code { get; set; }
+
+        public string Name { get; set; }
     }
 }

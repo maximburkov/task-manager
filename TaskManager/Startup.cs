@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using TaskManager.Models;
+using TaskManager.Repositories;
 using TaskManager.Services;
 
 namespace TaskManager
@@ -31,8 +32,8 @@ namespace TaskManager
         {
             var conString = Configuration.GetValue<string>("StorageConnectionString");
 
-            //services.AddSingleton<IDbContext>(new CosmosDBContext(conString));
-            //services.AddScoped<ITableStorageRepository<TaskEntity>, TaskRepository>();
+            services.AddSingleton<ITableStorageContext>(new TaskManagerContext(conString));
+            services.AddScoped<ITaskRepository, TaskTableStorageRepository>();
 
             services.AddControllers();
 
