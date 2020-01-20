@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.WindowsAzure.Storage.Table;
 using TaskManager.Models;
 using TaskManager.Services;
@@ -11,9 +12,11 @@ namespace TaskManager.Repositories
     public class TaskTableStorageRepository : BaseTableStorageRepository, ITaskRepository
     {
         private const string TableName = "Tasks";
+        private readonly IMapper _mapper;
 
-        public TaskTableStorageRepository(ITableStorageContext context) : base(context)
+        public TaskTableStorageRepository(ITableStorageContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<TaskModel>> GetAllAsync()
@@ -31,15 +34,7 @@ namespace TaskManager.Repositories
                 result.AddRange(queryResults.Results);
             } while (continuationToken != null);
 
-            var mappedResult = result.Select(i => new TaskModel
-            {
-                Description = i.Description,
-                Id = i.RowKey,
-                ProjectId = i.PartitionKey,
-                Subject = i.Subject
-            });
-
-            return mappedResult;
+            return result.Select(task => _mapper.Map<TaskModel>(task));
         }
 
         public async Task<TaskModel> GetAsync(string id)
