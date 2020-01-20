@@ -37,9 +37,12 @@ namespace TaskManager.Repositories
             return result.Select(task => _mapper.Map<TaskModel>(task));
         }
 
-        public async Task<TaskModel> GetAsync(string id)
+        public async Task<TaskModel> GetAsync(string projectId, string id)
         {
-            throw new NotImplementedException();
+            var tasksTable = await GetTableAsync(TableName);
+            var result = await tasksTable.ExecuteAsync(TableOperation.Retrieve<TaskEntity>(projectId, id));
+
+            return _mapper.Map<TaskModel>(result.Result);
         }
 
         public async Task CreateAsync(TaskModel newItem)

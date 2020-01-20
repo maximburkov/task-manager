@@ -10,7 +10,7 @@ namespace TaskManager.Repositories
     {
         public Task<IEnumerable<TaskModel>> GetAllAsync();
 
-        public Task<TaskModel> GetAsync(string id);
+        public Task<TaskModel> GetAsync(string projectId, string id);
 
         public Task CreateAsync(TaskModel newItem);
 

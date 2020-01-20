@@ -30,6 +30,12 @@ namespace TaskManager.Controllers
         {
             return _repository.GetAllAsync();
         }
+
+        [HttpGet("{projectId}/{id}")]
+        public Task<TaskModel> Get(string projectId, string id)
+        {
+            return _repository.GetAsync(projectId, id);
+        }
     }
 }
 
