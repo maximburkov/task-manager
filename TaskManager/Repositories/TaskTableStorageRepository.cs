@@ -8,21 +8,17 @@ using TaskManager.Services;
 
 namespace TaskManager.Repositories
 {
-    public class TaskTableStorageRepository : ITaskRepository
+    public class TaskTableStorageRepository : BaseTableStorageRepository, ITaskRepository
     {
-        private ITableStorageContext _context;
         private const string TableName = "Tasks";
-        private readonly CloudTableClient _tableClient;
 
-        public TaskTableStorageRepository(ITableStorageContext context)
+        public TaskTableStorageRepository(ITableStorageContext context) : base(context)
         {
-            _context = context;
-            _tableClient = _context.StorageAccount.CreateCloudTableClient();
         }
 
         public async Task<IEnumerable<TaskModel>> GetAllAsync()
         {
-            var tasksTable = _tableClient.GetTableReference("Tasks");
+            var tasksTable = await GetTableAsync(TableName);
             var query = new TableQuery<TaskEntity>();
             var result = new List<TaskEntity>();
 
@@ -30,18 +26,9 @@ namespace TaskManager.Repositories
 
             do
             {
-                try
-                {
-                    var queryResults = await tasksTable.ExecuteQuerySegmentedAsync(query, continuationToken);
-                    continuationToken = queryResults.ContinuationToken;
-
-
-                    result.AddRange(queryResults.Results);
-                }
-                catch (Exception e)
-                {
-
-                }
+                var queryResults = await tasksTable.ExecuteQuerySegmentedAsync(query, continuationToken);
+                continuationToken = queryResults.ContinuationToken;
+                result.AddRange(queryResults.Results);
             } while (continuationToken != null);
 
             var mappedResult = result.Select(i => new TaskModel
