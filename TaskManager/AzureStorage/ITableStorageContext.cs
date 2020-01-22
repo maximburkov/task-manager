@@ -11,5 +11,7 @@ namespace TaskManager.AzureStorage
         Task<T> GetAsync<T>(string tableName, string rowKey, string partitionKey) where T : class, ITableEntity;
 
         Task<IEnumerable<T>> GetAllAsync<T>(string tableName) where T : class, ITableEntity, new();
+
+        Task AddAsync(string tableName, ITableEntity model);
     }
 }

@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace TaskManager.Models
 {
-    public class ProjectEntity
+    public class ProjectEntity : TableEntity
     {
-        public string Id { get; set; }
-
-        public string Code { get; set; }
-
         public string Name { get; set; }
     }
 }

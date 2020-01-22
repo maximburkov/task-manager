@@ -56,5 +56,12 @@ namespace TaskManager.AzureStorage
 
             return result;
         }
+
+        public async Task AddAsync(string tableName, ITableEntity model)
+        {
+            var table = await GetTableAsync(tableName);
+            var operation = TableOperation.InsertOrReplace(model);
+            await table.ExecuteAsync(operation);
+        }
     }
 }

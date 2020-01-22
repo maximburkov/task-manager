@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskManager.AzureStorage;
@@ -28,6 +29,13 @@ namespace TaskManager.Services
         {
             var tasks = await _context.GetAllAsync<TaskEntity>(TableName);
             return _mapper.Map<List<TaskModel>>(tasks);
+        }
+
+        public async Task AddAsync(TaskModel task)
+        {
+            task.Id = Guid.NewGuid().ToString();
+            var taskEntity = _mapper.Map<TaskEntity>(task);
+            await _context.AddAsync(TableName, taskEntity);
         }
     }
 }

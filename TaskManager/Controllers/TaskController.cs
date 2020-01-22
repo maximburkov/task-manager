@@ -33,6 +33,12 @@ namespace TaskManager.Controllers
         {
             return await _taskService.GetAsync(id, projectId);
         }
+
+        [HttpPost]
+        public async Task Post(TaskModel task)
+        {
+            await _taskService.AddAsync(task);
+        }
     }
 }
 
