@@ -31,11 +31,12 @@ namespace TaskManager.Services
             return _mapper.Map<List<TaskModel>>(tasks);
         }
 
-        public async Task AddAsync(TaskModel task)
+        public async Task<TaskModel> AddAsync(TaskModel task)
         {
             task.Id = Guid.NewGuid().ToString();
             var taskEntity = _mapper.Map<TaskEntity>(task);
             await _context.AddAsync(TableName, taskEntity);
+            return task;
         }
     }
 }

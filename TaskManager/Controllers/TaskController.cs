@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using TaskManager.Models;
 using TaskManager.Services;
@@ -9,7 +10,7 @@ using TaskManager.Services;
 namespace TaskManager.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/tasks")]
     public class TaskController : ControllerBase
     {
 
@@ -35,9 +36,10 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
-        public async Task Post(TaskModel task)
+        public async Task<ActionResult<TaskModel>> Post(TaskModel task)
         {
-            await _taskService.AddAsync(task);
+            var addedItem = await _taskService.AddAsync(task);
+            return CreatedAtAction(nameof(Get), addedItem);
         }
     }
 }

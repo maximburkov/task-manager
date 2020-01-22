@@ -12,6 +12,6 @@ namespace TaskManager.Services
 
         Task<IEnumerable<TaskModel>> GetAllAsync();
 
-        Task AddAsync(TaskModel task);
+        Task<TaskModel> AddAsync(TaskModel task);
     }
 }
