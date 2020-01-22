@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskManager.Models;
-using TaskManager.Repositories;
 using TaskManager.Services;
-using TaskEntity = TaskManager.Models.TaskEntity;
 
 namespace TaskManager.Controllers
 {
@@ -17,24 +14,24 @@ namespace TaskManager.Controllers
     {
 
         private readonly ILogger<TaskController> _logger;
-        private readonly ITaskRepository _repository;
+        private readonly ITaskService _taskService;
 
-        public TaskController(ILogger<TaskController> logger, ITaskRepository repository)
+        public TaskController(ILogger<TaskController> logger, ITaskService service)
         {
             _logger = logger;
-            _repository = repository;
+            _taskService = service;
         }
 
         [HttpGet]
-        public Task<IEnumerable<TaskModel>> Get()
+        public async Task<IEnumerable<TaskModel>> Get()
         {
-            return _repository.GetAllAsync();
+            return await _taskService.GetAllAsync();
         }
 
         [HttpGet("{projectId}/{id}")]
-        public Task<TaskModel> Get(string projectId, string id)
+        public async Task<TaskModel> Get(string projectId, string id)
         {
-            return _repository.GetAsync(projectId, id);
+            return await _taskService.GetAsync(id, projectId);
         }
     }
 }

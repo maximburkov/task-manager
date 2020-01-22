@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TaskManager.Repositories;
+using TaskManager.AzureStorage;
 using TaskManager.Services;
 
 namespace TaskManager
@@ -23,8 +23,8 @@ namespace TaskManager
         {
             var conString = Configuration.GetValue<string>("StorageConnectionString");
 
-            services.AddSingleton<ITableStorageContext>(new TaskManagerContext(conString));
-            services.AddScoped<ITaskRepository, TaskTableStorageRepository>();
+            services.AddSingleton<ITableStorageContext>(new TableStorageContext(conString));
+            services.AddScoped<ITaskService, TaskStorageService>();
 
             services.AddControllers();
 
