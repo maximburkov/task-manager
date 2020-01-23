@@ -10,36 +10,55 @@ using TaskManager.Services;
 namespace TaskManager.Controllers
 {
     [ApiController]
-    [Route("api/tasks")]
-    public class TaskController : ControllerBase
+    [Route("api/projects/{projectId}/tasks")]
+    public class TasksController : ControllerBase
     {
 
-        private readonly ILogger<TaskController> _logger;
+        private readonly ILogger<TasksController> _logger;
         private readonly ITaskService _taskService;
 
-        public TaskController(ILogger<TaskController> logger, ITaskService service)
+
+        public TasksController(ILogger<TasksController> logger, ITaskService service)
         {
             _logger = logger;
             _taskService = service;
         }
 
-        [HttpGet]
+        [HttpGet("/api/tasks")]
         public async Task<IEnumerable<TaskModel>> Get()
         {
             return await _taskService.GetAllAsync();
         }
 
-        [HttpGet("{projectId}/{id}")]
-        public async Task<TaskModel> Get(string projectId, string id)
+        [HttpGet]
+        public async Task<IEnumerable<TaskModel>> GetByProjectId(string projectId)
+        {
+            return await _taskService.GetAllAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<TaskModel> GetById(string projectId, string id)
         {
             return await _taskService.GetAsync(id, projectId);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskModel>> Post(TaskModel task)
+        public async Task<ActionResult<TaskModel>> Create(string projectId, TaskModel task)
         {
             var addedItem = await _taskService.AddAsync(task);
             return CreatedAtAction(nameof(Get), addedItem);
+        }
+
+        [HttpPut("{id}")]
+        public Task<ActionResult<TaskModel>> Update(string projectId, string id, TaskModel task)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("{id}")]
+        public Task<ActionResult> Delete(string projectId, string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

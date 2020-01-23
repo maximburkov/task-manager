@@ -9,38 +9,42 @@ namespace TaskManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectController : ControllerBase
+    public class ProjectsController : ControllerBase
     {
-        // GET: api/Project
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            throw new NotImplementedException();
         }
 
-        // GET: api/Project/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public string GetById(string id)
         {
-            return "value";
+            throw new NotImplementedException();
         }
 
-        // POST: api/Project
+        [HttpGet("{id}/{code}")]
+        public string GetByIdAndCode(string id, string code)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Create()
         {
+            throw new NotImplementedException();
         }
 
-        // PUT: api/Project/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{id}/{code}")]
+        public void Put(string id)
         {
+            throw new NotImplementedException();
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id}/{code}")]
+        public void Delete(string id)
         {
+            throw new NotImplementedException();
         }
     }
 }
