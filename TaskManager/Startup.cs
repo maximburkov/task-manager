@@ -25,6 +25,7 @@ namespace TaskManager
 
             services.AddSingleton<ITableStorageContext>(new TableStorageContext(conString));
             services.AddScoped<ITaskService, TaskStorageService>();
+            services.AddScoped<IProjectService, ProjectStorageService>();
 
             services.AddControllers();
 

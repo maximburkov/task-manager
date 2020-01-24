@@ -26,12 +26,23 @@ namespace TaskManager.Services
             return _mapper.Map<Project>(result);
         }
 
-        public Task<IEnumerable<Project>> GetAllAsync()
+        public async Task<IEnumerable<Project>> GetAllAsync()
+        {
+            var projects = await _context.GetAllAsync<ProjectEntity>(TableName);
+            return _mapper.Map<List<Project>>(projects);
+        }
+
+        public Task<Project> AddAsync(Project project)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddAsync(Project task)
+        public Task<TaskModel> UpdateAsync(string id, string code, Project project)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(string id, string code)
         {
             throw new NotImplementedException();
         }

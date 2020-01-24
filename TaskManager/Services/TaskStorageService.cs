@@ -25,6 +25,11 @@ namespace TaskManager.Services
             return _mapper.Map<TaskModel>(task);
         }
 
+        public Task<TaskModel> GetAllByProjectIdAsync(string projectId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<TaskModel>> GetAllAsync()
         {
             var tasks = await _context.GetAllAsync<TaskEntity>(TableName);
@@ -37,6 +42,16 @@ namespace TaskManager.Services
             var taskEntity = _mapper.Map<TaskEntity>(task);
             await _context.AddAsync(TableName, taskEntity);
             return task;
+        }
+
+        public Task<TaskModel> UpdateAsync(string id, string projectId, TaskModel task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(string id, string projectId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

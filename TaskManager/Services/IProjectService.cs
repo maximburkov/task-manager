@@ -6,12 +6,16 @@ using TaskManager.Models;
 
 namespace TaskManager.Services
 {
-    interface IProjectService
+    public interface IProjectService
     {
-        Task<Project> GetAsync(string id, string projectId);
+        Task<Project> GetAsync(string id, string code);
 
         Task<IEnumerable<Project>> GetAllAsync();
 
-        Task AddAsync(Project task);
+        Task<Project> AddAsync(Project project);
+
+        Task<TaskModel> UpdateAsync(string id, string code, Project project);
+
+        Task DeleteAsync(string id, string code);
     }
 }

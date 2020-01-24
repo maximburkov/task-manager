@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Microsoft.Extensions.Logging;
+using TaskManager.QueryParameters;
+using TaskManager.Services;
+using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
@@ -11,10 +15,27 @@ namespace TaskManager.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ILogger<ProjectsController> _logger;
+        private readonly IProjectService _projectService;
+
+        public ProjectsController(ILogger<ProjectsController> logger, IProjectService service)
         {
-            throw new NotImplementedException();
+            _logger = logger;
+            _projectService = service;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Project>), (int)HttpStatusCode.OK)]
+        public async Task<IEnumerable<Project>> Get(int limit = 100, int offset = 0, string id = null, string code = null, string name = null)
+        {
+            //if (!parameters.HasValues)
+            //{
+                return await _projectService.GetAllAsync();
+            //}
+            //else
+            //{
+            //    throw new NotImplementedException();
+            //}
         }
 
         [HttpGet("{id}")]

@@ -10,8 +10,14 @@ namespace TaskManager.Services
     {
         Task<TaskModel> GetAsync(string id, string projectId);
 
+        Task<TaskModel> GetAllByProjectIdAsync(string projectId);
+
         Task<IEnumerable<TaskModel>> GetAllAsync();
 
         Task<TaskModel> AddAsync(TaskModel task);
+
+        Task<TaskModel> UpdateAsync(string id, string projectId, TaskModel task);
+
+        Task DeleteAsync(string id, string projectId);
     }
 }
