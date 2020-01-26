@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Models;
+using TaskManager.QueryParameters;
 
 namespace TaskManager.Services
 {
@@ -11,6 +12,8 @@ namespace TaskManager.Services
         Task<Project> GetAsync(string id, string code);
 
         Task<IEnumerable<Project>> GetAllAsync();
+
+        Task<IEnumerable<Project>> GetWithParameters(ProjectsParameters parameters);
 
         Task<Project> AddAsync(Project project);
 

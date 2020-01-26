@@ -7,10 +7,14 @@ namespace TaskManager.QueryParameters
 {
     public abstract class QueryParameters 
     {
-        public abstract bool HasValues { get; }
+        public int? Take { get; set; }
 
-        public int? Page { get; set; }
+        public int? Offset { get; set; }
 
-        public int? PageSize { get; set; }
+        /// <summary>
+        /// Defines if any parameter is defined
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool HasValues();
     }
 }

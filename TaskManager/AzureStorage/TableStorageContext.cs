@@ -41,10 +41,26 @@ namespace TaskManager.AzureStorage
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(string tableName) where T : class, ITableEntity, new()
         {
-            var tasksTable = await GetTableAsync(tableName);
-            var query = new TableQuery<T>();
-            var result = new List<T>();
+            return await QueryAsync<T>(tableName, new TableQuery<T>());
+        }
 
+        public async Task<IEnumerable<T>> QueryWithParametersAsync<T> (string tableName, TableQuery<T> tableQuery) where T : class, ITableEntity, new()
+        {
+            return await QueryAsync<T>(tableName, tableQuery);
+        }
+
+        public async Task<ITableEntity> AddAsync(string tableName, ITableEntity model)
+        {
+            var table = await GetTableAsync(tableName);
+            var operation = TableOperation.InsertOrReplace(model);
+            await table.ExecuteAsync(operation);
+            return model;
+        }
+
+        private async Task<IEnumerable<T>> QueryAsync<T>(string tableName, TableQuery<T> query) where T : class, ITableEntity, new()
+        {
+            var tasksTable = await GetTableAsync(tableName);
+            var result = new List<T>();
             TableContinuationToken continuationToken = null;
 
             do
@@ -55,14 +71,6 @@ namespace TaskManager.AzureStorage
             } while (continuationToken != null);
 
             return result;
-        }
-
-        public async Task<ITableEntity> AddAsync(string tableName, ITableEntity model)
-        {
-            var table = await GetTableAsync(tableName);
-            var operation = TableOperation.InsertOrReplace(model);
-            await table.ExecuteAsync(operation);
-            return model;
         }
     }
 }

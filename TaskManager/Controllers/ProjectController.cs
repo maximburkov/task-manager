@@ -26,16 +26,21 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Project>), (int)HttpStatusCode.OK)]
-        public async Task<IEnumerable<Project>> Get(int limit = 100, int offset = 0, string id = null, string code = null, string name = null)
+        public async Task<IEnumerable<Project>> Get([FromQuery] ProjectsParameters parameters)
         {
-            //if (!parameters.HasValues)
-            //{
+            if (!parameters.HasValues())
+            {
                 return await _projectService.GetAllAsync();
-            //}
-            //else
-            //{
-            //    throw new NotImplementedException();
-            //}
+            }
+            else if (parameters.HasOnlyKeys())
+            {
+                var project = await _projectService.GetAsync(parameters.Id, parameters.Code);
+                return new List<Project>() { project };
+            }
+            else
+            {
+                return await _projectService.GetWithParameters(parameters);
+            }        
         }
 
         [HttpGet("{id}")]

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.WindowsAzure.Storage.Table;
 using TaskManager.AzureStorage;
 using TaskManager.Models;
+using TaskManager.QueryParameters;
 
 namespace TaskManager.Services
 {
@@ -29,6 +31,33 @@ namespace TaskManager.Services
         public async Task<IEnumerable<Project>> GetAllAsync()
         {
             var projects = await _context.GetAllAsync<ProjectEntity>(TableName);
+            return _mapper.Map<List<Project>>(projects);
+        }
+
+        public async Task<IEnumerable<Project>> GetWithParameters(ProjectsParameters parameters)
+        {
+            var queryFilters = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(parameters.Id))
+            {
+                queryFilters += TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, parameters.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.Code))
+            {
+                queryFilters += TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, parameters.Code);
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
+            {
+                queryFilters += TableQuery.GenerateFilterCondition("Name", QueryComparisons.Equal, parameters.Name);
+            }
+            if (parameters.Take.HasValue)
+            {
+
+            }
+
+            TableQuery<ProjectEntity> tableQuery = new TableQuery<ProjectEntity>().Where(queryFilters);
+
+            var projects = await _context.QueryWithParametersAsync(TableName, tableQuery);
             return _mapper.Map<List<Project>>(projects);
         }
 
