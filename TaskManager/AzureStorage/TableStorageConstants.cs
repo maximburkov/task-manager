@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TaskManager.AzureStorage
 {
-    public static class CloudTableExtensions
+    public static class TableStorageConstants
     {
-
+        public const string Rowkey = "RowKey";
 
     }
 }

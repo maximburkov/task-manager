@@ -33,15 +33,13 @@ namespace TaskManager.Controllers
             {
                 return await _projectService.GetAllAsync();
             }
-            else if (parameters.HasOnlyKeys())
+            if (parameters.HasOnlyKeys())
             {
                 var project = await _projectService.GetAsync(parameters.Id, parameters.Code);
                 return new List<Project>() { project };
             }
-            else
-            {
-                return await _projectService.GetWithParameters(parameters);
-            }        
+
+            return await _projectService.GetWithParameters(parameters);
         }
 
         [HttpGet("{id}")]

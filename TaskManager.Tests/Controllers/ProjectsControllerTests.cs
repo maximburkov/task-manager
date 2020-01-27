@@ -3,7 +3,7 @@ using Xunit;
 
 namespace TaskManager.Tests
 {
-    public class UnitTest1
+    public class ProjectsControllerTests
     {
         [Fact]
         public void Test1()
