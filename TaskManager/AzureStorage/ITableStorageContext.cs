@@ -16,5 +16,9 @@ namespace TaskManager.AzureStorage
 
 
         Task<ITableEntity> AddAsync(string tableName, ITableEntity model);
+
+        Task<ITableEntity> UpdateAsync(string tableName, ITableEntity model);
+
+        Task DeleteAsync<T>(string tableName, string rowKey, string partitionKey) where T : class, ITableEntity;
     }
 }

@@ -17,7 +17,7 @@ namespace TaskManager.Services
 
         Task<Project> AddAsync(Project project);
 
-        Task<TaskModel> UpdateAsync(string id, string code, Project project);
+        Task<Project> UpdateAsync(string id, string code, Project project);
 
         Task DeleteAsync(string id, string code);
     }

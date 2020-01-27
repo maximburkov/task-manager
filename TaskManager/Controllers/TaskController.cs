@@ -46,7 +46,7 @@ namespace TaskManager.Controllers
         public async Task<ActionResult<TaskModel>> Create(string projectId, TaskModel task)
         {
             var addedItem = await _taskService.AddAsync(task);
-            return CreatedAtAction(nameof(Get), addedItem);
+            return CreatedAtAction(nameof(Create), addedItem);
         }
 
         [HttpPut("{id}")]

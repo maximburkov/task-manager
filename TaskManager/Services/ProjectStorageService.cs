@@ -61,19 +61,25 @@ namespace TaskManager.Services
             return _mapper.Map<List<Project>>(projects);
         }
 
-        public Task<Project> AddAsync(Project project)
+        public async Task<Project> AddAsync(Project project)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(TableName, _mapper.Map<ProjectEntity>(project));
+            //TODO: should we return
+            return project;
         }
 
-        public Task<TaskModel> UpdateAsync(string id, string code, Project project)
+        public async Task<Project> UpdateAsync(string id, string code, Project project)
         {
-            throw new NotImplementedException();
+            project.Id = id;
+            project.Code = code;
+
+            await _context.UpdateAsync(TableName, _mapper.Map<ProjectEntity>(project));
+            return project;
         }
 
-        public Task DeleteAsync(string id, string code)
+        public async Task DeleteAsync(string id, string code)
         {
-            throw new NotImplementedException();
+            await _context.DeleteAsync<ProjectEntity>(TableName,id, code);
         }
     }
 }

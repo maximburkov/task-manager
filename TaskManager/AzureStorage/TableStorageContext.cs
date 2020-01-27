@@ -57,6 +57,23 @@ namespace TaskManager.AzureStorage
             return model;
         }
 
+        public async Task<ITableEntity> UpdateAsync(string tableName, ITableEntity model)
+        {
+            var table = await GetTableAsync(tableName);
+            var operation = TableOperation.InsertOrMerge(model);
+            await table.ExecuteAsync(operation);
+            return model;
+        }
+
+        public async Task DeleteAsync<T>(string tableName, string rowKey, string partitionKey) where T : class, ITableEntity
+        {
+            var table = await GetTableAsync(tableName);
+            var entityToDelete = await GetAsync<T>(tableName, rowKey, partitionKey);
+            var deleteOperation = TableOperation.Delete(entityToDelete);
+            await table.ExecuteAsync(deleteOperation);
+        }
+
+
         private async Task<IEnumerable<T>> QueryAsync<T>(string tableName, TableQuery<T> query) where T : class, ITableEntity, new()
         {
             var tasksTable = await GetTableAsync(tableName);

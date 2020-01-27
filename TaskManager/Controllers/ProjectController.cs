@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -44,27 +45,34 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet("{id}")]
-        public string GetById(string id)
+        public async Task<Project> GetById(string id)
         {
-            throw new NotImplementedException();
+            var projects = await _projectService.GetWithParameters(new ProjectsParameters {Id = id});
+            return projects.First();
         }
 
         [HttpGet("{id}/{code}")]
-        public string GetByIdAndCode(string id, string code)
+        public async Task<ActionResult<Project>> GetByIdAndCode(string id, string code)
         {
-            throw new NotImplementedException();
+            var project = await _projectService.GetAsync(id, code);
+
+            if (project == null)
+                return NotFound();
+
+            return Ok(project);
         }
 
         [HttpPost]
-        public void Create()
+        public async Task<ActionResult<Project>> Create(Project project)
         {
-            throw new NotImplementedException();
+            var createdProject = await _projectService.AddAsync(project);
+            return Ok(createdProject);
         }
 
         [HttpPut("{id}/{code}")]
         public void Put(string id)
         {
-            throw new NotImplementedException();
+            
         }
 
         [HttpDelete("{id}/{code}")]
