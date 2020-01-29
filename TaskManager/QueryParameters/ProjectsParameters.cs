@@ -20,7 +20,7 @@ namespace TaskManager.QueryParameters
         /// Defines if parameters has only key-values
         /// </summary>
         /// <returns></returns>
-        public bool HasOnlyKeys() => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Code) 
+        public override bool HasOnlyKeys() => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Code) 
             && string.IsNullOrWhiteSpace(Name) && !Take.HasValue;
     }
 }

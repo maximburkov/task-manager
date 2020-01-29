@@ -85,7 +85,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPut("{id}/{code}")]
-        [ProducesResponseType(typeof(Project), (int) HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(Project), (int) HttpStatusCode.OK)]
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
         public async Task<ActionResult<Project>> Put(string id, string code, UpdateProjectDto project)

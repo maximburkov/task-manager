@@ -2,8 +2,10 @@
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Table;
 using TaskManager.AzureStorage;
 using TaskManager.Models;
+using TaskManager.QueryParameters;
 
 namespace TaskManager.Services
 {
@@ -30,6 +32,38 @@ namespace TaskManager.Services
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<TaskModel>> GetWithParameters(TasksParameters parameters)
+        {
+            var queryFilters = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(parameters.Id))
+            {
+                queryFilters = TableQuery.GenerateFilterCondition(nameof(TaskEntity.RowKey), QueryComparisons.Equal, parameters.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.ProjectId))
+            {
+                var projectCondition =
+                    TableQuery.GenerateFilterCondition(nameof(TaskEntity.PartitionKey), QueryComparisons.Equal, parameters.ProjectId);
+                queryFilters = string.IsNullOrEmpty(queryFilters) ? projectCondition : TableQuery.CombineFilters(queryFilters, TableOperators.And, projectCondition);
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.Subject))
+            {
+                var subjectCondition =
+                    TableQuery.GenerateFilterCondition(nameof(TaskEntity.Subject), QueryComparisons.Equal, parameters.Subject);
+                queryFilters = string.IsNullOrEmpty(queryFilters) ? subjectCondition : TableQuery.CombineFilters(queryFilters, TableOperators.And, subjectCondition);
+            }
+
+            TableQuery<TaskEntity> tableQuery = new TableQuery<TaskEntity>().Where(queryFilters);
+
+            if (parameters.Take.HasValue)
+            {
+                tableQuery = tableQuery.Take(parameters.Take.Value);
+            }
+
+            var tasks = await _context.QueryWithParametersAsync(TableName, tableQuery);
+            return _mapper.Map<List<TaskModel>>(tasks);
+        }
+
         public async Task<IEnumerable<TaskModel>> GetAllAsync()
         {
             var tasks = await _context.GetAllAsync<TaskEntity>(TableName);
@@ -38,20 +72,23 @@ namespace TaskManager.Services
 
         public async Task<TaskModel> AddAsync(TaskModel task)
         {
-            task.Id = Guid.NewGuid().ToString();
             var taskEntity = _mapper.Map<TaskEntity>(task);
             await _context.AddAsync(TableName, taskEntity);
             return task;
         }
 
-        public Task<TaskModel> UpdateAsync(string id, string projectId, TaskModel task)
+        public async Task<TaskModel> UpdateAsync(string id, string projectId, TaskModel task)
         {
-            throw new NotImplementedException();
+            task.Id = id;
+            task.ProjectId = projectId;
+
+            await _context.UpdateAsync(TableName, _mapper.Map<TaskEntity>(task));
+            return task;
         }
 
-        public Task DeleteAsync(string id, string projectId)
+        public async Task DeleteAsync(string id, string projectId)
         {
-            throw new NotImplementedException();
+            await _context.DeleteAsync<ProjectEntity>(TableName, id, projectId);
         }
     }
 }

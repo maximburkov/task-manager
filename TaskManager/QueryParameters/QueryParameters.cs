@@ -16,5 +16,7 @@ namespace TaskManager.QueryParameters
         /// </summary>
         /// <returns></returns>
         public abstract bool HasValues();
+
+        public abstract bool HasOnlyKeys();
     }
 }

@@ -31,6 +31,8 @@ namespace TaskManager
             CreateMap<TaskModel, TaskEntity>()
                 .ForMember(dest => dest.RowKey, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PartitionKey, opt => opt.MapFrom(src => src.ProjectId));
+
+            CreateMap<TaskDto, TaskModel>();
         }
     }
 }
