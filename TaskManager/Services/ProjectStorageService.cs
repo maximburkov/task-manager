@@ -40,18 +40,18 @@ namespace TaskManager.Services
 
             if (!string.IsNullOrWhiteSpace(parameters.Id))
             {
-                queryFilters = TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, parameters.Id);
+                queryFilters = TableQuery.GenerateFilterCondition(nameof(ProjectEntity.RowKey), QueryComparisons.Equal, parameters.Id);
             }
             if (!string.IsNullOrWhiteSpace(parameters.Code))
             {
                 var codeCondition =
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, parameters.Code);
+                    TableQuery.GenerateFilterCondition(nameof(ProjectEntity.PartitionKey), QueryComparisons.Equal, parameters.Code);
                 queryFilters = string.IsNullOrEmpty(queryFilters) ? codeCondition : TableQuery.CombineFilters(queryFilters, TableOperators.And, codeCondition);
             }
             if (!string.IsNullOrWhiteSpace(parameters.Name))
             {
                 var nameCondition =
-                    TableQuery.GenerateFilterCondition("Name", QueryComparisons.Equal, parameters.Name);
+                    TableQuery.GenerateFilterCondition(nameof(ProjectEntity.Name), QueryComparisons.Equal, parameters.Name);
                 queryFilters = string.IsNullOrEmpty(queryFilters) ? nameCondition : TableQuery.CombineFilters(queryFilters, TableOperators.And, nameCondition);
             }
 
@@ -61,10 +61,10 @@ namespace TaskManager.Services
             {
                 tableQuery = tableQuery.Take(parameters.Take.Value);
             }
-            if (parameters.Offset.HasValue)
-            {
-                //TODO: offset parameter
-            }
+            //if (parameters.Offset.HasValue)
+            //{
+            //    //TODO: offset parameter
+            //}
 
             var projects = await _context.QueryWithParametersAsync(TableName, tableQuery);
             return _mapper.Map<List<Project>>(projects);

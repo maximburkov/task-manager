@@ -14,13 +14,13 @@ namespace TaskManager.QueryParameters
         public string Id { get; set; }
 
         public override bool HasValues() => !string.IsNullOrWhiteSpace(Code) || !string.IsNullOrWhiteSpace(Name) ||
-                                          !string.IsNullOrWhiteSpace(Id) || Take.HasValue || Offset.HasValue;
+                                          !string.IsNullOrWhiteSpace(Id) || Take.HasValue;
 
         /// <summary>
         /// Defines if parameters has only key-values
         /// </summary>
         /// <returns></returns>
         public bool HasOnlyKeys() => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Code) 
-            && string.IsNullOrWhiteSpace(Name) && !Take.HasValue && !Offset.HasValue;
+            && string.IsNullOrWhiteSpace(Name) && !Take.HasValue;
     }
 }

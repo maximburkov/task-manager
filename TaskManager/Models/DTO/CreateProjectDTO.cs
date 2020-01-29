@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManager.Models
+namespace TaskManager.Models.DTO
 {
-    public class Project
+    public class CreateProjectDto
     {
-        [StringLength(100)]
-        public string Id { get; set; }
-
         [StringLength(100)]
         [Required]
         public string Code { get; set; }

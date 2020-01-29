@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using TaskManager.Exceptions;
 
 namespace TaskManager.AzureStorage
 {
@@ -52,7 +53,7 @@ namespace TaskManager.AzureStorage
         public async Task<ITableEntity> AddAsync(string tableName, ITableEntity model)
         {
             var table = await GetTableAsync(tableName);
-            var operation = TableOperation.InsertOrReplace(model);
+            var operation = TableOperation.Insert(model);
             await table.ExecuteAsync(operation);
             return model;
         }
@@ -60,8 +61,18 @@ namespace TaskManager.AzureStorage
         public async Task<ITableEntity> UpdateAsync(string tableName, ITableEntity model)
         {
             var table = await GetTableAsync(tableName);
-            var operation = TableOperation.InsertOrMerge(model);
-            await table.ExecuteAsync(operation);
+            model.ETag ??= "*";
+            var operation = TableOperation.Merge(model);
+            try
+            {
+                await table.ExecuteAsync(operation);
+            }
+            catch (StorageException e)
+            {
+                if(e.Message == "Not Found")
+                    throw new NotFoundException($"Not Found in {tableName} with RowKey {model.RowKey} and PartitionKey {model.PartitionKey}");
+                throw;
+            }
             return model;
         }
 
@@ -69,6 +80,10 @@ namespace TaskManager.AzureStorage
         {
             var table = await GetTableAsync(tableName);
             var entityToDelete = await GetAsync<T>(tableName, rowKey, partitionKey);
+
+            if (entityToDelete == null)
+                throw new NotFoundException($"Not Found in {tableName} with RowKey {rowKey} and PartitionKey {partitionKey}");
+
             var deleteOperation = TableOperation.Delete(entityToDelete);
             await table.ExecuteAsync(deleteOperation);
         }
@@ -85,7 +100,7 @@ namespace TaskManager.AzureStorage
                 var queryResults = await tasksTable.ExecuteQuerySegmentedAsync(query, continuationToken);
                 continuationToken = queryResults.ContinuationToken;
                 result.AddRange(queryResults.Results);
-            } while (continuationToken != null);
+            } while (continuationToken != null && (!query.TakeCount.HasValue || result.Count < query.TakeCount.Value));
 
             return result;
         }

@@ -9,7 +9,7 @@ namespace TaskManager.QueryParameters
     {
         public int? Take { get; set; }
 
-        public int? Offset { get; set; }
+        //public int? Offset { get; set; }
 
         /// <summary>
         /// Defines if any parameter is defined
