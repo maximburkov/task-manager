@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AuthService.Models;
 using AuthService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -55,5 +56,13 @@ namespace AuthService.Controllers
                 Login = user.Login,
             });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<string> Test()
+        {
+            return "secret string";
+        }
+
     }
 }
