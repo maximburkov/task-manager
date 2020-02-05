@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using TaskManager.Exceptions;
 using TaskManager.QueryParameters;
@@ -31,6 +32,7 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Project>), (int)HttpStatusCode.OK)]
+        [Authorize]
         public async Task<IEnumerable<Project>> Get([FromQuery] ProjectsParameters parameters)
         {
             if (!parameters.HasValues())
