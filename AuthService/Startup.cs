@@ -32,12 +32,16 @@ namespace AuthService
         {
             services.Configure<AppSettings>(Configuration);
 
+            var key = Configuration.GetValue<string>("Auth:Secret");
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
                         ValidateLifetime = true,
                         IssuerSigningKey = AuthManager.CreateSymmetricSecurityKey(Configuration.GetValue<string>("Auth:Secret")),
                         ValidateIssuerSigningKey = true
@@ -77,8 +81,8 @@ namespace AuthService
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

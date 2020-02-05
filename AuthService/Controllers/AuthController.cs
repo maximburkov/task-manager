@@ -44,8 +44,7 @@ namespace AuthService.Controllers
             var token = new JwtSecurityToken(
                 expires: DateTime.UtcNow.AddMinutes(_settings.Auth.Lifetime),
                 signingCredentials: new SigningCredentials(
-                    AuthManager.CreateSymmetricSecurityKey(_settings.Auth.Secret),
-                    SecurityAlgorithms.HmacSha256));
+                    AuthManager.CreateSymmetricSecurityKey(_settings.Auth.Secret), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
 
