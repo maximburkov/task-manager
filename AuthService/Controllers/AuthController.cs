@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using AuthService.Models;
+﻿using AuthService.Models;
 using AuthService.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace AuthService.Controllers
 {
@@ -44,7 +38,7 @@ namespace AuthService.Controllers
             var token = new JwtSecurityToken(
                 expires: DateTime.UtcNow.AddMinutes(_settings.Auth.Lifetime),
                 signingCredentials: new SigningCredentials(
-                    AuthManager.CreateSymmetricSecurityKey(_settings.Auth.Secret), SecurityAlgorithms.HmacSha256));
+                    AuthManager.CreateSymmetricSecurityKey(_settings.SecretKey), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -55,13 +49,5 @@ namespace AuthService.Controllers
                 Login = user.Login,
             });
         }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<string> Test()
-        {
-            return "secret string";
-        }
-
     }
 }

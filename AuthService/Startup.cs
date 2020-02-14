@@ -1,22 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AuthService.Infrastructure;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
-using AuthService.Infrastructure;
 
 namespace AuthService
 {
@@ -34,7 +25,7 @@ namespace AuthService
         {
             services.Configure<AppSettings>(Configuration);
 
-            var key = Configuration.GetValue<string>("Auth:Secret");
+            var key = Configuration.GetValue<string>("SecretKey");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -45,7 +36,7 @@ namespace AuthService
                         ValidateAudience = false,
                         ValidateIssuer = false,
                         ValidateLifetime = true,
-                        IssuerSigningKey = AuthManager.CreateSymmetricSecurityKey(Configuration.GetValue<string>("Auth:Secret")),
+                        IssuerSigningKey = AuthManager.CreateSymmetricSecurityKey(key),
                         ValidateIssuerSigningKey = true
                     };
                 });

@@ -9,6 +9,8 @@ namespace AuthService
     {
         public Logging Logging { get; set; }
 
+        public string SecretKey { get; set; }
+
         public Auth Auth { get; set; }
     }
 
@@ -21,8 +23,6 @@ namespace AuthService
 
     public class Auth
     {
-        public string Secret { get; set; }
-
         public int Lifetime { get; set; }
     }
 
