@@ -30,7 +30,16 @@ namespace TaskManager.AzureStorage
             if (!_tables.TryGetValue(tableName, out var table))
             {
                 table = _cloudClient.GetTableReference(tableName);
-                await table.CreateIfNotExistsAsync();
+                try
+                {
+                    await table.CreateIfNotExistsAsync();
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
                 _tables.TryAdd(tableName, table);
             }
 

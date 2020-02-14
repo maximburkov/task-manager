@@ -17,6 +17,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;
@@ -32,7 +33,6 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Project>), (int)HttpStatusCode.OK)]
-        [Authorize]
         public async Task<IEnumerable<Project>> Get([FromQuery] ProjectsParameters parameters)
         {
             if (!parameters.HasValues())

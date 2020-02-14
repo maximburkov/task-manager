@@ -12,7 +12,7 @@ namespace AuthService.Services
         //temporary
         private List<User> _users = new List<User>
         {
-            new User {Login="admin@gmail.com", Password="12345" },
+            new User {Login="123", Password="123" },
             new User { Login="qwerty@gmail.com", Password="55555"}
         };
 

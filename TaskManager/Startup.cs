@@ -33,7 +33,7 @@ namespace TaskManager
                         ValidateAudience = false,
                         ValidateIssuer = false,
                         ValidateLifetime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Auth:Secret"))),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"))),
                         ValidateIssuerSigningKey = true
                     };
                 });

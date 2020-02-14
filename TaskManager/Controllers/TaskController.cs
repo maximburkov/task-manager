@@ -10,11 +10,13 @@ using TaskManager.Models;
 using TaskManager.Models.DTO;
 using TaskManager.QueryParameters;
 using TaskManager.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManager.Controllers
 {
     [ApiController]
     [Route("api/projects/{projectId}/tasks")]
+    [Authorize]
     public class TasksController : ControllerBase
     {
 

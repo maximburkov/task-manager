@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
+using System;
 
 namespace TaskManager
 {
@@ -18,9 +17,26 @@ namespace TaskManager
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    if (!context.HostingEnvironment.IsDevelopment())
+                    {
+                        string name = Environment.GetEnvironmentVariable("KEY_VAULT_NAME");
+                        string clientId = Environment.GetEnvironmentVariable("KEY_VAULT_CLIENT_ID");
+                        string clientSecret = Environment.GetEnvironmentVariable("KEY_VAULT_CLIENT_SECRET");
+
+                        config.AddAzureKeyVault(name, clientId, clientSecret, new DefaultKeyVaultSecretManager());
+                    }
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                })
+                .UseNLog();
     }
 }
