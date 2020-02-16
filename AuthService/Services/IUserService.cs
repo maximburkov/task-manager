@@ -8,6 +8,7 @@ namespace AuthService.Services
 {
     public interface IUserService
     {
-        public Task<User> GetUserAsync(string login, string password);
+        Task<User> GetUserAsync(string login);
+        Task CreateUserAsync(User user);
     }
 }

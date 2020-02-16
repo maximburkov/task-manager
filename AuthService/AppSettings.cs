@@ -12,6 +12,8 @@ namespace AuthService
         public string SecretKey { get; set; }
 
         public Auth Auth { get; set; }
+
+        public string Salt { get; set; }
     }
 
 

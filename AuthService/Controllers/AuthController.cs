@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using AuthService.Models.DTO;
 
 namespace AuthService.Controllers
 {
@@ -28,7 +29,7 @@ namespace AuthService.Controllers
         [HttpPost]
         public async Task<ActionResult> GetToken(AuthRequest request)
         {
-            var user = await _userService.GetUserAsync(request.Login, request.Password);
+            var user = await _userService.GetUserAsync(request.Login);
 
             if (user == null)
             {

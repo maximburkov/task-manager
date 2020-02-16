@@ -1,5 +1,7 @@
+using AuthService.AzureStorage;
 using AuthService.Infrastructure;
 using AuthService.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TaskManager.AzureStorage;
 
 namespace AuthService
 {
@@ -41,7 +44,10 @@ namespace AuthService
                     };
                 });
 
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, UserStorageService>();
+            var conString = Configuration.GetValue<string>("StorageConnectionString");
+
+            services.AddSingleton<ITableStorageContext>(new TableStorageContext(conString));
 
             services.AddControllers();
 
@@ -54,6 +60,8 @@ namespace AuthService
                     Description = "Access and refresh tokens"
                 });
             });
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

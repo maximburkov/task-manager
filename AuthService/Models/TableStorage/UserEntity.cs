@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Table;
 
-namespace AuthService.Models
+namespace AuthService.Models.TableStorage
 {
-    public class User
+    public class UserEntity : TableEntity
     {
-        public string Login { get; set; }
-
         public string Password { get; set; }
 
         public string Salt { get; set; }
