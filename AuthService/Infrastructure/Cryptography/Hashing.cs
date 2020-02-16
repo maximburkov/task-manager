@@ -21,7 +21,7 @@ namespace AuthService.Infrastructure.Cryptography
 
         public static string CreateSalt()
         {
-            byte[] randomBytes = new byte[128 / 8];
+            byte[] randomBytes = new byte[16];
             using var generator = RandomNumberGenerator.Create();
             generator.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);

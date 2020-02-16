@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AuthService.Models.DTO;
 
@@ -43,6 +44,7 @@ namespace AuthService.Controllers
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
 
+
             return Ok(new AuthResponse
             {
                 AccessToken = encodedJwt,
@@ -50,5 +52,13 @@ namespace AuthService.Controllers
                 Login = user.Login,
             });
         }
+
+        private string GenerateRefreshToken()
+        {
+            byte[] randomBytes = new byte[16];
+            using var generator = RandomNumberGenerator.Create();
+            generator.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
+        } 
     }
 }

@@ -24,5 +24,7 @@ namespace AuthService.Services
         /// </summary>
         /// <returns></returns>
         public static SymmetricSecurityKey CreateSymmetricSecurityKey(string secret) => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+
+
     }
 }
