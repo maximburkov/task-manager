@@ -10,8 +10,5 @@ namespace AuthService.Models.DTO
         [MinLength(6)]
         [StringLength(100)]
         public string Password { get; set; }
-
-        [StringLength(100)]
-        public string Name { get; set; }
     }
 }

@@ -25,7 +25,15 @@ namespace AuthService
 
     public class Auth
     {
-        public int Lifetime { get; set; }
+        /// <summary>
+        /// Access Token Lifetime in minutes
+        /// </summary>
+        public int AccessTokenLifetime { get; set; }
+
+        /// <summary>
+        /// Rferesh Token Lifetime in minutes
+        /// </summary>
+        public int RefreshTokenLifetime { get; set; }
     }
 
     public class Loglevel

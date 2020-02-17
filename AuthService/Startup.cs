@@ -45,6 +45,7 @@ namespace AuthService
                 });
 
             services.AddScoped<IUserService, UserStorageService>();
+            services.AddScoped<ITokenService, TokenStorageService>();
             var conString = Configuration.GetValue<string>("StorageConnectionString");
 
             services.AddSingleton<ITableStorageContext>(new TableStorageContext(conString));

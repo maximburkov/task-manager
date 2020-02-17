@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuthService.Models;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Threading.Tasks;
 
 namespace AuthService.Services
 {
-    interface ITokenService
+    public interface ITokenService
     {
-        //Task<ITableEntity> GetUserAsync(string login);
-        //Task CreateUserAsync( user);
+        Task<RefreshToken> CreateTokenAsync(RefreshToken token);
+        Task<RefreshToken> GetTokenAsync(string token, string login);
     }
 }
