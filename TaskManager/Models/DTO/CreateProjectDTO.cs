@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TaskManager.Infrastructure;
 
 namespace TaskManager.Models.DTO
 {
@@ -6,6 +7,7 @@ namespace TaskManager.Models.DTO
     {
         [StringLength(100)]
         [Required]
+        [RegularExpression(Constants.KeyRegex, ErrorMessage = Constants.NotAllowedRegexMessage)]
         public string Code { get; set; }
 
         [MaxLength(1000)]
