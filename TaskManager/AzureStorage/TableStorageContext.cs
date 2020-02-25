@@ -9,6 +9,20 @@ using TaskManager.Exceptions;
 
 namespace TaskManager.AzureStorage
 {
+    /*
+     * TODO: constraints for
+     * The following characters are not allowed in values for the PartitionKey and RowKey: https://docs.microsoft.com/ru-ru/archive/blogs/jmstall/azure-storage-naming-rules
+        The forward slash (/) character
+        The backslash (\) character
+        The number sign (#) character
+        The question mark (?) character
+        Control characters from U+0000 to U+001F, including:
+        The horizontal tab (\t) character
+        The linefeed (\n) character
+        The carriage return (\r) character
+        Control characters from U+007F to U+009F
+     */
+
     public class TableStorageContext : ITableStorageContext
     {
         private readonly CloudTableClient _cloudClient;

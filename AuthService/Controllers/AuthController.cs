@@ -95,6 +95,7 @@ namespace AuthService.Controllers
 
         private string GenerateRefreshToken()
         {
+            //TODO: can create token with not allowed characters
             byte[] randomBytes = new byte[16];
             using var generator = RandomNumberGenerator.Create();
             generator.GetBytes(randomBytes);

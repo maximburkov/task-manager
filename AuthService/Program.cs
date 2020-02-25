@@ -21,11 +21,11 @@ namespace AuthService
                     {
                         if (!context.HostingEnvironment.IsDevelopment())
                         {
-                            string name = Environment.GetEnvironmentVariable("KEY_VAULT_NAME");
+                            string uri = $"https://{Environment.GetEnvironmentVariable("KEY_VAULT_NAME")}.vault.azure.net/";
                             string clientId = Environment.GetEnvironmentVariable("KEY_VAULT_CLIENT_ID");
                             string clientSecret = Environment.GetEnvironmentVariable("KEY_VAULT_CLIENT_SECRET");
 
-                            config.AddAzureKeyVault(name, clientId, clientSecret, new DefaultKeyVaultSecretManager());
+                            config.AddAzureKeyVault(uri, clientId, clientSecret, new DefaultKeyVaultSecretManager());
                         }
                     })
                 .ConfigureWebHostDefaults(webBuilder =>
