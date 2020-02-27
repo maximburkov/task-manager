@@ -96,10 +96,11 @@ namespace AuthService.Controllers
         private string GenerateRefreshToken()
         {
             //TODO: can create token with not allowed characters
-            byte[] randomBytes = new byte[16];
-            using var generator = RandomNumberGenerator.Create();
-            generator.GetBytes(randomBytes);
-            return Convert.ToBase64String(randomBytes);
+            //byte[] randomBytes = new byte[16];
+            //using var generator = RandomNumberGenerator.Create();
+            //generator.GetBytes(randomBytes);
+            //return Convert.ToBase64String(randomBytes);
+            return Guid.NewGuid().ToString(); //temporary implementation with guid
         } 
 
         private string GenerateAccessToken(DateTime expirationDate)

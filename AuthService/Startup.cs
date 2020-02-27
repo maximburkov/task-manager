@@ -1,3 +1,4 @@
+using System;
 using AuthService.AzureStorage;
 using AuthService.Infrastructure;
 using AuthService.Services;
@@ -40,7 +41,8 @@ namespace AuthService
                         ValidateIssuer = false,
                         ValidateLifetime = true,
                         IssuerSigningKey = AuthManager.CreateSymmetricSecurityKey(key),
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
